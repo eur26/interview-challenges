@@ -1,19 +1,19 @@
 ## General instructions
 
-We have developed a small software to run a Coffe Shop. You can place a order and get the receipt.
-Now we have some bug reports from the users and some tasks to evolve the application.
+We have developed a small software to run a Coffee Shop. You can place an order and print the receipt.
+We have some bug reports from users and some tasks to evolve the application.
 
 Your task is to understand the current code and implement the topics that we have listed at the next section
 
 
 ## Coffee Shop Management
 
-##### 1) There is a promotion, when you order 2 lattes, you will receive a free espresso.
+##### 1) There is a promotion: if you order 2 lattes, you will receive a free espresso.
 * This feature is already available, but our users are complaining that it does not work everytime. We need to fix it.
 
 ##### 2) Print the Menu:
 
-Expected output:
+List of all available products and their prices:
 
 | Product Name | Price |
 | :---: | :---: |
@@ -34,26 +34,32 @@ Expected output:
 | Cake Slice | $ 9 |
 | Milk | $ 1 | 
 
-##### 4) We need to add a new promotion:
+##### 5) We need to add a new promotion:
   * When the order has food and drinks with total value over $ 50, which Latte will cost $3.
-  * Note: As the total price of the order is going to be recaulculated, the final value can be under $ 50.
+  * Note: The final price after the promotion is applied can be under $ 50.
 
-##### 5) Create a sales daily report
-   * List all the products that were sold with the ammount (2 lattes, 3 slices of cake...)
-   * How many orders we received on that day? 1 order XXXXXX
+##### 6) New Feature: The software does not have a way to know the amount of clients we had on a specific period.
+   * Add the client concept: Consider that a client place an order which can have one or more products.
+   * The order can have different amounts and types of products.
    
-
+##### 7) Create a sales daily report
+   * List all the products that were sold with the amount (2 lattes, 3 slices of cake...)
+   * Calculate the average client expense.   
 
 ## Additional comments
 
-Feel free to use any other dependency that is not current on the project, if you think it's necessary.
+Feel free to use any dependency that is not currently on the project.
 
-If you are planning to use git to manage the code, it would be nice to have a branch for each requirement. 
+If you are planning to use git to manage the code, it would be nice to have a branch for each requirement.
 In this scenario, you should:
 
-##### 1 - create a branch from the original code
-##### 2 - work on the first topic
-##### 3 - create a second branch from the first branch
-##### 4 - work on the second topic
-##### 5 - create a third branch from the second branch 
-##### ....
+1) create a branch from the original code
+2) work on the first topic
+3) create a second branch from the first branch
+4) work on the second topic
+5) create a third branch from the second branch 
+....
+
+That way we can see the evolution of your test.
+
+Feel free to contact us if you have any questions or comments.
