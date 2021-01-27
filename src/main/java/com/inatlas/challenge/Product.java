@@ -32,10 +32,10 @@ public class Product {
             return "$ 10.10";
         }
         if ("Latte".equals(this.name)) {
-            return "$ 5";
+            return "$ 5.3";
         }
         if ("Espresso".equals(this.name)) {
-            return "$ 3";
+            return "$ 4";
         }
         return "";
     }
