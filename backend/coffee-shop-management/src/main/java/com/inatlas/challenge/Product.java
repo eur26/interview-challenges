@@ -43,4 +43,8 @@ public class Product {
     public void setDiscount(boolean discount) {
         this.discount = discount;
     }
+    
+    public void setQtt(int qtt) {
+        this.qtt = qtt;
+    }
 }
