@@ -53,4 +53,17 @@ public class CoffeeShopTest {
         coffeeShop.printReceipt();
         // Total should be $18.1
     }
+    
+    @Test
+    public void testTakeMyFifthOrder(){
+        System.out.println("TEST 5");
+        CoffeeShop coffeeShop = new CoffeeShop();
+        coffeeShop.printMenu();
+        coffeeShop.takeOrder("Latte", 3);
+        coffeeShop.takeOrder("Espresso", 3);
+        coffeeShop.takeOrder("Espresso", 2);
+        coffeeShop.takeOrder("Sandwich", 2);
+        coffeeShop.printReceipt();
+        // Total should be $18.1
+    }
 }

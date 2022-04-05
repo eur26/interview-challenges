@@ -1,34 +1,73 @@
 package com.inatlas.challenge;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CoffeeShop {
     private List<Product> orders = new ArrayList<>();
     private List<Product> menu = new ArrayList<>();
+	private double discount;
+	
+	private static final DecimalFormat df = new DecimalFormat("0.00");
+	
 
     public void takeOrder(String product, Integer qtt) {
         this.orders.add(new Product(product, qtt));
     }
-
     public void addProduct(String product) {
         this.menu.add(new Product(product));
     }
 
     public void printReceipt() {
-        System.out.println("======================================");
+    	System.out.println("======================================");
         boolean hasMoreThanOneLatte = this.orders.stream().anyMatch(p -> p.getName().equals("Latte") && p.getQtt() > 1);
         long countLatte = this.orders.stream().filter(p -> p.getName().equals("Latte")).count();
+
+        Product esp1;
+        boolean deleteQttEspresso = false;
+        
+        //para que contabilice bien el total
+        orders = organizeOrder(this.orders);
+        
+      //promotion 1: if you order 2 lattes, you will receive a free espresso
         if (hasMoreThanOneLatte || countLatte > 1) {
-            Product exp1 = this.orders.stream().filter(p -> p.getName().equals("Espresso")).findFirst().get();
-            exp1.setDiscount(true);
+            esp1 = this.orders.stream().filter(p -> p.getName().equals("Espresso")).findFirst().get();
+            if(esp1.getQtt().equals(1)) {
+            	esp1.setDiscount(true);
+            } else {
+            	deleteQttEspresso=true;
+            }
         }
-        Double total = this.orders.stream().map(p -> {
-            System.out.println(p);
-            return Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
+        
+        
+        //promotion 2: 5% discount on the total, if the order have more than 8 products.
+        long countProducts = this.orders.size();
+        if (countProducts>8) {
+        	discount = 0.05;
+        }
+        
+        final boolean deleteQtt = deleteQttEspresso;
+
+		Double totalProm1 = this.orders.stream().map(p -> {
+			System.out.println(p.getQtt()+" "+p);
+        	return p.getName().equals("Espresso") && deleteQtt? 
+        			Double.valueOf(p.getPrice().split("\\$")[1])*(p.getQtt()-1)
+        			:Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
         }).reduce(0.0, (a, b) -> a + b);
+        
+
+		Double totalProm2 = this.orders.stream().map(p -> {
+            double price = Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
+            return Double.valueOf(price-(price*discount));
+        }).reduce(0.0, (a, b) -> a + b);
+        
+        //take cheapest promotion
+        Double total = totalProm1 < totalProm2? totalProm1:totalProm2;
+        //if(totalProm1 < totalProm2) System.out.println(orderBodyProm1); 
+        //else System.out.println(orderbodyProm2);
         System.out.println("----------------");
-        System.out.println("Total: $" + total);
+        System.out.println("Total: $" + df.format(total));
         System.out.println("======================================");
     }
 
@@ -54,6 +93,19 @@ public class CoffeeShop {
 
         System.out.println(formatDiv("g--------------h---------i"));
     }
+    
+    private List<Product> organizeOrder(List<Product> orders2) {
+    	List<Product> ordersTmp = new ArrayList<>();
+		for(Product p : orders2) {
+			if(ordersTmp.stream().anyMatch(o -> o.getName().equals(p.getName()))) {
+				Product prodTmp = ordersTmp.stream().filter(ot -> ot.getName().equals(p.getName())).findFirst().get();
+				prodTmp.setQtt(p.getQtt()+prodTmp.getQtt());
+			}else {
+				ordersTmp.add(p);
+			}
+		}
+		return ordersTmp;
+	}
     
     public static String center(String text, int len){
         if (len <= text.length())
