@@ -5,6 +5,10 @@ public class Product {
     private Integer qtt;
     private boolean discount;
 
+    public Product(String name) {
+        this.name = name;
+    }
+
     public Product(String name, Integer qtt) {
         this.name = name;
         this.qtt = qtt;
