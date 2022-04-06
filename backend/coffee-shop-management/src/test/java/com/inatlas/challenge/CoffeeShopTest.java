@@ -62,7 +62,7 @@ public class CoffeeShopTest {
         coffeeShop.takeOrder("Latte", 3);
         coffeeShop.takeOrder("Espresso", 3);
         coffeeShop.takeOrder("Espresso", 2);
-        coffeeShop.takeOrder("Sandwich", 2);
+        coffeeShop.takeOrder("Sandwich", 5);
         coffeeShop.printReceipt();
         // Total should be $18.1
     }

@@ -11,9 +11,7 @@ public class CoffeeShop {
 	
 	private static final DecimalFormat df = new DecimalFormat("0.00");
 	
-
-    public void takeOrder(String product, Integer qtt) {
-    	
+	public void takeOrder(String product, Integer qtt) {
     	Product prod = findProduct(product);
     	prod.setQtt(qtt);
         this.orders.add(prod);
@@ -21,14 +19,48 @@ public class CoffeeShop {
     
     private Product findProduct(String productName) {
     	Product prod = menu.stream()
-    			  .filter(product -> productName.equals(product.getName()))
-    			  .findAny()
-    			  .orElse(null);
+		  .filter(product -> productName.equals(product.getName()))
+		  .findAny()
+		  .orElse(null);
 		return prod;
 	}
+    
 	public void addProduct(String product, String price) {
         this.menu.add(new Product(product, price));
     }
+	
+	public Double calcularReceipt(String prom, boolean deleteQtt){
+		
+		Double total = null;
+		switch(prom) {
+			case "prom1":
+				total = this.orders.stream().map(p -> {
+		        	return p.getName().equals("Espresso") && deleteQtt? 
+		        			Double.valueOf(p.getPrice().split("\\$")[1])*(p.getQtt()-1)
+		        			:Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
+		        }).reduce(0.0, (a, b) -> a + b);
+				
+				break;
+			case "prom2":
+				total = this.orders.stream().map(p -> {
+		            double price = Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
+		            return Double.valueOf(price-(price*discount));
+		        }).reduce(0.0, (a, b) -> a + b);
+				
+				break;
+			case "prom3":
+				//latte = 3 and recalculate receipt
+				Product latteProd = findProduct("Latte");
+				latteProd.setPrice("$ 3");
+				total = this.orders.stream().map(p -> {
+		        	return Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
+		        }).reduce(0.0, (a, b) -> a + b);
+				
+				break;
+		}
+
+		return total;
+	}
 
     public void printReceipt() {
     	System.out.println("======================================");
@@ -58,24 +90,20 @@ public class CoffeeShop {
         }
         
         final boolean deleteQtt = deleteQttEspresso;
-
-		Double totalProm1 = this.orders.stream().map(p -> {
-			System.out.println(p.getQtt()+" "+p);
-        	return p.getName().equals("Espresso") && deleteQtt? 
-        			Double.valueOf(p.getPrice().split("\\$")[1])*(p.getQtt()-1)
-        			:Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
-        }).reduce(0.0, (a, b) -> a + b);
-        
-
-		Double totalProm2 = this.orders.stream().map(p -> {
-            double price = Double.valueOf(p.getPrice().split("\\$")[1])*p.getQtt();
-            return Double.valueOf(price-(price*discount));
-        }).reduce(0.0, (a, b) -> a + b);
+		Double totalProm1 = calcularReceipt("prom1", deleteQtt);
+		Double totalProm2 = calcularReceipt("prom2", deleteQtt);
         
         //take cheapest promotion
         Double total = totalProm1 < totalProm2? totalProm1:totalProm2;
-        //if(totalProm1 < totalProm2) System.out.println(orderBodyProm1); 
-        //else System.out.println(orderbodyProm2);
+        
+        if(total > 50.0) {
+        	total = calcularReceipt("prom3", deleteQtt);
+        }
+        
+        this.orders.stream().forEach(p -> {
+        	System.out.println(p.getQtt()+" "+p);
+        });
+			
         System.out.println("----------------");
         System.out.println("Total: $" + df.format(total));
         System.out.println("======================================");
@@ -121,7 +149,7 @@ public class CoffeeShop {
 		return ordersTmp;
 	}
     
-    public static String center(String text, int len){
+    public static String center(String text, int len) {
         if (len <= text.length())
             return text.substring(0, len);
         int before = (len - text.length())/2;
@@ -131,13 +159,11 @@ public class CoffeeShop {
         return String.format("%" + before + "s%-" + rest + "s", "", text);  
     }
     
-    public static String formatRow(String str)
-    {
+    public static String formatRow(String str) {
         return str.replace('|', '\u2502');
     }
 
-    public static String formatDiv(String str)
-    {
+    public static String formatDiv(String str) {
         return str.replace('a', '\u250c')
                 .replace('b', '\u252c')
                 .replace('c', '\u2510')
