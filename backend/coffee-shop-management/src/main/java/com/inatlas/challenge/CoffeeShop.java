@@ -161,7 +161,7 @@ public class CoffeeShop {
 
 		System.out.print(header);
 
-		this.menu.stream().forEach(prod -> {
+		menu.stream().forEach(prod -> {
 			String str1 = "|" + center(prod.getName(), pN.length() + 2) + "|" + center(prod.getPrice(), pr.length() + 4)
 					+ "|";
 			System.out.println(formatRow(str1));
