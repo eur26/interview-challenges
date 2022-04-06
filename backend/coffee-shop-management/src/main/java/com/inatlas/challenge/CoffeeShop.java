@@ -57,7 +57,7 @@ public class CoffeeShop {
 	}
 
 	private void addProduct(String product, String price) {
-		this.menu.add(new Product(product, price));
+		menu.add(new Product(product, price));
 	}
 
 	private Double calcularReceipt(List<Product> order, String prom, boolean deleteQtt) {

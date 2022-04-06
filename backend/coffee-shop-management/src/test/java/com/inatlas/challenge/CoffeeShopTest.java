@@ -49,8 +49,8 @@ public class CoffeeShopTest {
         coffeeShop.printMenu();
         Client cliente = new Client("Laura");
         List<Product> order = new ArrayList<>();
-        CoffeeShop.takeOrder(cliente, order, "Latte", 1);
-        CoffeeShop.takeOrder(cliente, order, "Latte", 1);
+        coffeeShop.takeOrder(cliente, order, "Latte", 1);
+        coffeeShop.takeOrder(cliente, order, "Latte", 1);
         coffeeShop.takeOrder(cliente, order, "Espresso", 1);
         coffeeShop.takeOrder(cliente, order, "Sandwich", 1);
         coffeeShop.printReceipt(order);
