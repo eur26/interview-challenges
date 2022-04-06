@@ -1,9 +1,20 @@
 package com.inatlas.challenge;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class Product {
+	
+	@Getter
     private String name;
+    
+    @Getter @Setter
     private Integer qtt;
+    
+    @Setter
     private boolean discount;
+    
+    @Setter
     private String price;
 
     public Product(String name) {
@@ -27,36 +38,14 @@ public class Product {
     }
 
     @Override
-    public String toString() {
+	public String toString() {
         return name + " " + getPrice();
-    }
-
-    public Integer getQtt() {
-        return qtt;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setPrice(String price) {
-    	this.price = price;
     }
     
     public String getPrice() {
         if (discount) {
             return "$ 0.0";
         }
-        
         return price;
     }
-
-    public void setDiscount(boolean discount) {
-        this.discount = discount;
-    }
-
-	public void setQtt(int qtt) {
-		this.qtt = qtt;
-		
-	}
 }
