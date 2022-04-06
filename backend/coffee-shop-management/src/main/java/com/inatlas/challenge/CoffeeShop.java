@@ -13,10 +13,21 @@ public class CoffeeShop {
 	
 
     public void takeOrder(String product, Integer qtt) {
-        this.orders.add(new Product(product, qtt));
+    	
+    	Product prod = findProduct(product);
+    	prod.setQtt(qtt);
+        this.orders.add(prod);
     }
-    public void addProduct(String product) {
-        this.menu.add(new Product(product));
+    
+    private Product findProduct(String productName) {
+    	Product prod = menu.stream()
+    			  .filter(product -> productName.equals(product.getName()))
+    			  .findAny()
+    			  .orElse(null);
+		return prod;
+	}
+	public void addProduct(String product, String price) {
+        this.menu.add(new Product(product, price));
     }
 
     public void printReceipt() {
@@ -30,7 +41,7 @@ public class CoffeeShop {
         //para que contabilice bien el total
         orders = organizeOrder(this.orders);
         
-      //promotion 1: if you order 2 lattes, you will receive a free espresso
+        //promotion 1: if you order 2 lattes, you will receive a free espresso
         if (hasMoreThanOneLatte || countLatte > 1) {
             esp1 = this.orders.stream().filter(p -> p.getName().equals("Espresso")).findFirst().get();
             if(esp1.getQtt().equals(1)) {
@@ -39,7 +50,6 @@ public class CoffeeShop {
             	deleteQttEspresso=true;
             }
         }
-        
         
         //promotion 2: 5% discount on the total, if the order have more than 8 products.
         long countProducts = this.orders.size();
@@ -73,9 +83,13 @@ public class CoffeeShop {
 
     public void printMenu() {
         // Print whole menu
-        addProduct("Latte");
-    	addProduct("Espresso");
-    	addProduct("Sandwich");
+        addProduct("Latte", "$ 5.3");
+    	addProduct("Espresso", "$ 4");
+    	addProduct("Sandwich", "$ 10.10");
+    	addProduct("Capuccino", "$ 8");
+    	addProduct("Tea", "$ 6.1");
+    	addProduct("Cake Slice", "$ 9");
+    	addProduct("Milk", "$ 1");
     	
     	String pN = "Product Name";
     	String pr = "Price";
